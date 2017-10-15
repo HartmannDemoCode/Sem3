@@ -1,0 +1,88 @@
+{
+  "books": [
+    {
+      "id": 104,
+      "title": "voluptate magnam consequatur",
+      "author": "Junior Nienow",
+      "rating": 1.95,
+      "year_published": 1820
+    },
+    {
+      "id": 105,
+      "title": "eaque qui voluptatum qui",
+      "author": "Jayne Altenwerth",
+      "rating": 0.5,
+      "year_published": 1906
+    },
+    {
+      "id": 106,
+      "title": "et earum vel eum",
+      "author": "Fredy Schulist",
+      "rating": 0.6,
+      "year_published": 1711
+    },
+    {
+      "id": 107,
+      "title": "exercitationem reprehenderit quo voluptas perspiciatis",
+      "author": "Haven Walter",
+      "rating": 1.85,
+      "year_published": 1826
+    },
+    {
+      "id": 108,
+      "title": "doloremque quo qui",
+      "author": "Bridie Labadie",
+      "rating": 3,
+      "year_published": 1932
+    },
+    {
+      "id": 109,
+      "title": "consequatur laudantium in",
+      "author": "Adolphus Bahringer",
+      "rating": 1.85,
+      "year_published": 1845
+    },
+    {
+      "id": 110,
+      "title": "est est qui tempora error",
+      "author": "Lilian Abshire",
+      "rating": 1.7,
+      "year_published": 1902
+    },
+    {
+      "id": 111,
+      "title": "dolorem dolorem adipisci et non illo",
+      "author": "Della Wisozk",
+      "rating": 1.5,
+      "year_published": 1951
+    },
+    {
+      "id": 112,
+      "title": "modi alias id",
+      "author": "Vernie Balistreri",
+      "rating": 4.35,
+      "year_published": 1978
+    },
+    {
+      "id": 113,
+      "title": "eveniet rerum",
+      "author": "Zora Fahey",
+      "rating": 0.95,
+      "year_published": 1839
+    },
+    {
+      "id": 114,
+      "title": "omnis suscipit",
+      "author": "Tyrique Harber",
+      "rating": 0.95,
+      "year_published": 1735
+    },
+    {
+      "id": 115,
+      "title": "aut voluptates facilis aut autem",
+      "author": "Sabina Schmeler",
+      "rating": 3.2,
+      "year_published": 1732
+    }
+  ]
+}

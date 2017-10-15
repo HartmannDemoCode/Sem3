@@ -1,0 +1,22 @@
+a{
+    text-decoration: none;
+}
+header a{
+    width: 80px;
+    margin: 4px;
+}
+ul{
+    list-style-type: none;
+}
+header ul {
+    margin: 5px;
+    padding: 0;
+}
+header li{
+    display: inline;
+    border: 1px solid black;
+    margin: 0 0 10px 10px;
+}
+header{
+    background-color: aquamarine;
+}
