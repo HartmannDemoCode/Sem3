@@ -3,7 +3,6 @@
  */
 import mobx, { observable,computed} from "mobx";
 
-//Part 2 of the exercise (Now with observable properties)
 class ObservableTodoStore {
     @observable todos = [];
     @observable pendingRequests = 0;
