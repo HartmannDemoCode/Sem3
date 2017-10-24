@@ -48,8 +48,8 @@
       <file leaf-file-name="Products.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/routingDemo/Products.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="597">
-              <caret line="38" column="47" lean-forward="false" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="47" />
+            <state relative-caret-position="150">
+              <caret line="27" column="11" lean-forward="true" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
               <folding>
                 <element signature="e#41#67#0" expanded="true" />
               </folding>
@@ -206,7 +206,7 @@
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../seedClient" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/semseed2017e/seedClient" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
   </component>
@@ -282,12 +282,12 @@
       <option name="presentableId" value="Default" />
       <updated>1508746839340</updated>
       <workItem from="1508746840560" duration="1672000" />
-      <workItem from="1508749306735" duration="3467000" />
+      <workItem from="1508749306735" duration="4726000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5139000" />
+    <option name="totallyTimeSpent" value="6398000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -441,8 +441,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/routingDemo/Products.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="597">
-          <caret line="38" column="47" lean-forward="false" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="47" />
+        <state relative-caret-position="150">
+          <caret line="27" column="11" lean-forward="true" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
           <folding>
             <element signature="e#41#67#0" expanded="true" />
           </folding>
