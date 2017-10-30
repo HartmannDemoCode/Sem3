@@ -4,11 +4,12 @@
 //Create a new file App2.js, and copy all from this file into is
 
 import React from "react";
-import { BrowserRouter, Route, Link, NavLink, Switch, Prompt } from "react-router-dom";
+import { HashRouter, Route, Link, NavLink, Switch, Prompt } from "react-router-dom";
 import bookStore from './BookStore';
 import Details from './Details';
 import Header from './Header';
 import Product from './Products';
+import './RoutingStyles.css';
 
 //Todo: This component must be completed
 
@@ -36,7 +37,7 @@ export default class App2 extends React.Component {
     }
     render() {
         return (
-            <BrowserRouter>
+            <HashRouter>
                 <div>
                     <Header />
                     <Switch>
@@ -45,7 +46,7 @@ export default class App2 extends React.Component {
                         <Route component={Home}></Route>
                     </Switch>
                 </div>
-            </BrowserRouter>
+            </HashRouter>
         );
     }
 }

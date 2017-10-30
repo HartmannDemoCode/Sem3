@@ -14,16 +14,16 @@ import Container from './components/stateChangerAdv/Container';
 //import TodoList from './TodoList';
 import W2D1App from './exercises/week2-D1_COS_React_Routing/Week2-D1_COS_React_Routing';
 // import BookStore from './exercises/week2-D1_COS_React_Routing/BookStore';
-import StateDemo from './components/liftingUp/StateDemo';
+// import StateDemo from './components/liftingUp/StateDemo';
 // let bookStore = new BookStore();
 //const observableTodoStore = window.store = ObservableTodoStore;
 // ReactDOM.render(<CarApp/>, document.getElementById('root'));
 // ReactDOM.render(<TicTacToe/>, document.getElementById('root'));
 // ReactDOM.render(<TodoList store={observableTodoStore} people={peopleStore}/>, document.getElementById('root'));
 // ReactDOM.render(<W2D1App bookStore={bookStore}/>, document.getElementById('root'));
-ReactDOM.render(<StateDemo/>, document.getElementById('root'));
+ReactDOM.render(<BrowserRouter>
+    <RoutingDemo />
+</BrowserRouter>, document.getElementById('root'));
 {/* Use this for router demo
- (<BrowserRouter>
- <RoutingDemo />
- </BrowserRouter>)
+ ()
  */}
