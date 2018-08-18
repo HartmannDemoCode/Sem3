@@ -49,7 +49,8 @@ public class UploadResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson() {
+    public String getJson(@Context UriInfo uriInfo) {
+        
         //TODO return proper representation object
         return "{\"test\":\"test value\"}";
     }

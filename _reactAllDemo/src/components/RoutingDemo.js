@@ -46,7 +46,7 @@ const Main = () => (
 );
 const Home = () => (
     <div>
-        <h1>Welcome to the Tornadoes Website!</h1>
+        <h1>Welcome to the Webshop!</h1>
     </div>
 )
 const Product = () => (
