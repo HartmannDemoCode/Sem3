@@ -9,6 +9,10 @@ package futuredemo;
  *
  * @author tha
  */
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -34,6 +38,8 @@ public class FutureDemo {
         System.out.println("Task is completed, let's check result");
         long factorial = future.get();
         System.out.println("Factorial of 1000000 is : " + factorial);
+        
+        
         threadpool.shutdown();
     }
 
