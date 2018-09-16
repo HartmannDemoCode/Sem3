@@ -8,10 +8,13 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import entity.Customer;
+import exceptions.CustomerNotFoundException;
+import exceptions.ExceptionDTO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -20,6 +23,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -47,12 +51,14 @@ public class CustomerResource {
     public CustomerResource() {
     }
 
+    // SImple method to see if the service is running. Test with: /api/customer
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJson() {
         return Response.ok().entity(gson.toJson(customers.get(1))).build();
     }
 
+    // Simple method to test use of Path annotation. Test with /api/customer/all
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,13 +66,25 @@ public class CustomerResource {
         return Response.ok().entity(gson.toJson(customers)).build();
     }
 
+    // Method to test the use of semantic parameters. Test with /api/customer/3
     @GET
-    @Path("/{id}")
+    @Path("/{id}") //with a sematic url parameter
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomerById(@PathParam("id") int id) {
         return Response.ok().entity(gson.toJson(customers.get(id))).build();
     }
+    
+    // Method to test use of url query string parameters. Test with /api/customer/queryparam?olderThan=50
+    @GET
+    @Path("/queryparam") 
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Customer> showUseOfQueryParam(@QueryParam("olderThan") int age) {
+        List<Customer> all = new ArrayList(customers.values());
+        List older = all.stream().filter((cus)->cus.getAge()>age).collect(Collectors.toList());
+        return older;
+    }
 
+    // Method to test use of request parameters from a web form. Test with POST: /api/customer/ DATA: {"name": "Svend Auken","age": 82}
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -77,7 +95,7 @@ public class CustomerResource {
         return Response.ok().entity(gson.toJson(newCustomer)).build();
     }
 
-
+    // Simple errorhandling. Test the use of jersey WebApplicationException. Test with /api/customer/test/2 and /api/customer/test/10 to see difference look in browsers network tab for 404.
     @GET
     @Path("/test/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,6 +106,8 @@ public class CustomerResource {
         }
         return cust;
     }
+    // Test the jersey automatic conversion of List<Customer> to json (or xml based on the @produces media type). 
+    // Test with /api/customer/test/all
     @GET
     @Path("/test/all")
     @Produces(MediaType.APPLICATION_JSON)
@@ -97,6 +117,33 @@ public class CustomerResource {
         return new ArrayList(customers.values());
     }
     
+    // ErrorHandling Test using the Exception DTO to wrap the Exception and send as json. 
+    // Test with /api/customer/test/ex
+    @GET
+    @Path("/test/ex")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String testExceptionDTO() {
+        try {
+            throw new NumberFormatException("Number must be an integer");
+        } catch (NumberFormatException e) {
+            ExceptionDTO exDTO = new ExceptionDTO(e, 406, true);
+            return gson.toJson(exDTO);
+        }
+    }
+    
+    //Test using both the specific CustomerNotFoundExceptionHandler and the generic ExceptionMapper that will catch all the rest. 
+    // Test with /api/customer/test/exmap/3 or api/customer/test/exmap/10 to see either the general server exception the specific CustomerNotFoundException.
+    @GET
+    @Path("/test/exmap/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String testExceptionMapper(@PathParam("id")int id) throws CustomerNotFoundException, Exception {
+        Customer cus = findCustomer(id);
+        if(cus == null)
+            throw new CustomerNotFoundException("No customer for you I'm sorry");
+        throw new Exception("Some server side error happend bla bla bla");
+    }
+    
+    //2 private helper methods
     private void addCustomer(Customer customer) {
         int nextId = customers.size() + 1;
         customer.setId(nextId);
