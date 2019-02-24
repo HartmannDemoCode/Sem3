@@ -23,9 +23,11 @@ public class Tester {
         city1.addCustomer(cus1);
         city1.addCustomer(cus2);
         city1.addCustomer(cus3);
-      String jsonString = gson.toJson(cus1); // THIS IS BAD
-//        CustomerDTO cDTO = new CustomerDTO(cus1);
-//        String jsonString = gson.toJson(cDTO);
+//      String jsonString = gson.toJson(cus1); // THIS IS BAD
+        
+
+        CustomerDTO cDTO = new CustomerDTO(cus1);
+        String jsonString = gson.toJson(cDTO);
         System.out.println(jsonString);
     }
 }

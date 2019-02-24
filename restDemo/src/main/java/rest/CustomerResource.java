@@ -114,7 +114,7 @@ public class CustomerResource {
         return cust;
     }
     // Test the jersey automatic conversion of List<Customer> to json (or xml based on the @produces media type). 
-    // Test with /api/customer/test/all
+    // Test with GET: /api/customer/test/all
     @GET
     @Path("/test/all")
     @Produces(MediaType.APPLICATION_JSON)
