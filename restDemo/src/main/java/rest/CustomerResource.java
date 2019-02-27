@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import data.CustomerFacade;
 import entity.Customer;
 import exceptions.CustomerNotFoundException;
 import exceptions.ExceptionDTO;
@@ -38,13 +39,7 @@ public class CustomerResource {
     @Context
     private UriInfo context;
 
-    private static Map<Integer, Customer> customers = new HashMap();
-
-   static {
-        customers.put(1, new Customer(1, "Oluf Palme", 96));
-        customers.put(2, new Customer(2, "Sarah Palin", 56));
-        customers.put(3, new Customer(3, "Vladimir Putin", 12));
-    }
+    CustomerFacade cf = new CustomerFacade();
 
     public CustomerResource() {
     }
@@ -53,7 +48,7 @@ public class CustomerResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJson() {
-        return Response.ok().entity(gson.toJson(customers.get(1))).build();
+        return Response.ok().entity(gson.toJson(cf.getAllCustomers())).build();
     }
 
     // Simple method to test use of Path annotation. Test with /api/customer/allasmap
@@ -61,7 +56,7 @@ public class CustomerResource {
     @Path("/allasmap")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomers() {
-        return Response.ok().entity(gson.toJson(customers)).build();
+        return Response.ok().entity(gson.toJson(cf.getData())).build();
     }
     
     // Simple method to use with javascript (See the script.js file.
@@ -70,15 +65,17 @@ public class CustomerResource {
     @Path("/allasarray")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllasArray() {
-        return Response.ok().entity(gson.toJson(customers.values())).build();
+        return Response.ok().entity(gson.toJson(cf.getData().values())).build();
     }
 
     // Method to test the use of semantic parameters. Test with /api/customer/3
     @GET
     @Path("/{id}") //with a sematic url parameter
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCustomerById(@PathParam("id") int id) {
-        return Response.ok().entity(gson.toJson(customers.get(id))).build();
+    public Response getCustomerById(@PathParam("id") int id) throws CustomerNotFoundException {
+        Customer c = cf.getCustomerById(id);
+        if(c==null) throw new CustomerNotFoundException("no customer with id: "+id);
+        return Response.ok().entity(gson.toJson(c)).build();
     }
     
     // Method to test use of url query string parameters. Test with /api/customer/queryparam?olderThan=50
@@ -86,7 +83,7 @@ public class CustomerResource {
     @Path("/queryparam") 
     @Produces(MediaType.APPLICATION_JSON)
     public List<Customer> showUseOfQueryParam(@QueryParam("olderThan") int age) {
-        List<Customer> all = new ArrayList(customers.values());
+        List<Customer> all = new ArrayList(cf.getAllCustomers());
         List older = all.stream().filter((cus)->cus.getAge()>age).collect(Collectors.toList());
         return older;
     }
@@ -98,8 +95,8 @@ public class CustomerResource {
     public Response postCustomer(String content) {
         Customer newCustomer = gson.fromJson(content, Customer.class);
         System.out.println("newCustomer: " + newCustomer);
-        addCustomer(newCustomer);
-        return Response.ok().entity(gson.toJson(newCustomer)).build();
+        Customer c = cf.createCustomer(newCustomer);
+        return Response.ok().entity(gson.toJson(c)).build();
     }
 
     // Simple errorhandling. Test the use of jersey WebApplicationException. Test with /api/customer/test/2 and /api/customer/test/10 to see difference look in browsers network tab for 404.
@@ -107,7 +104,7 @@ public class CustomerResource {
     @Path("/test/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Customer getCustomer(@PathParam("id") int id) {
-        Customer cust = findCustomer(id);
+        Customer cust = cf.getCustomerById(id);
         if (cust == null){
            throw new WebApplicationException(Response.Status.NOT_FOUND); //look for 404 not found in the browser.
         }
@@ -118,10 +115,8 @@ public class CustomerResource {
     @GET
     @Path("/test/all")
     @Produces(MediaType.APPLICATION_JSON)
-//    public Map<Integer, Customer> getCustomersALL() {
-//        return customers; //Does not work - throws exception: WebApplicationException: com.sun.jersey.api.MessageException: A message body writer for Java class java.util.HashMap, and Java type java.util.Map<java.lang.Integer, entity.Customer>, and MIME media type application/json was not found.
-    public List<Customer> getCustomersALL() {
-        return new ArrayList(customers.values());
+        public List<Customer> getCustomersALL() {
+        return cf.getAllCustomers();
     }
     
     // ErrorHandling Test using the Exception DTO to wrap the Exception and send as json. 
@@ -144,7 +139,7 @@ public class CustomerResource {
     @Path("/test/exmap/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String testExceptionMapper(@PathParam("id")int id) throws CustomerNotFoundException, Exception {
-        Customer cus = findCustomer(id);
+        Customer cus = cf.getCustomerById(id);
         if(cus == null)
             throw new CustomerNotFoundException("No customer for you I'm sorry");
         throw new Exception("Some server side error happend bla bla bla");
@@ -157,7 +152,7 @@ public class CustomerResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateCustomer( String content, @PathParam("id") int id) throws CustomerNotFoundException {
         Customer newCustomer = gson.fromJson(content, Customer.class);
-        Customer savedCus = customers.get(id);
+        Customer savedCus = cf.getCustomerById(id);
         if(savedCus == null)
             throw new CustomerNotFoundException("no customer with id: "+id);
         if(newCustomer.getName()!=null)
@@ -172,31 +167,11 @@ public class CustomerResource {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteCustomer(@PathParam("id")int id) {
+    public Response deleteCustomer(@PathParam("id")int id) throws CustomerNotFoundException {
 //        Customer cust = customers.get(id);
-        Customer c = customers.remove(id);
+        Customer c = cf.deleteCustomer(id);
+        if(c== null)
+            throw new CustomerNotFoundException("no customer with id: "+id+" to delete");
         return Response.ok().entity(gson.toJson(c)).build();
-    }
-
-
-    
-    //3 private helper methods
-    private void addCustomer(Customer customer) {
-        int nextId = getHighestId()+1;
-        customer.setId(nextId);
-        customers.put(nextId, customer);
-    }
-    private int getHighestId(){
-        int highest = 0;
-        Set<Integer> keys = customers.keySet();
-        for (Integer key : keys) {
-            if(key > highest)
-                highest = key;
-        }
-        return highest;
-    }
-    
-    private Customer findCustomer(int id){
-        return customers.get(id);
     }
 }
